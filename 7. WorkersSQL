@@ -1,0 +1,28 @@
+The following data definition defines an organization's employee hierarchy.
+
+An employee is a manager if any other employee has their managerId set to this employee's id. That means John is a manager if at least one other employee has their managerId set to John's id.
+
+TABLE employees
+  id INTEGER NOT NULL PRIMARY KEY
+  managerId INTEGER REFERENCES employees(id)
+  name VARCHAR(30) NOT NULL
+Write a query that selects only the names of employees who are not managers.
+
+See the example case for more details.
+
+-- Example case create statement:
+CREATE TABLE employees (
+  id INTEGER NOT NULL PRIMARY KEY,
+  managerId INTEGER REFERENCES employees(id), 
+  name VARCHAR(30) NOT NULL
+);
+
+INSERT INTO employees(id, managerId, name) VALUES(1, NULL, 'John');
+INSERT INTO employees(id, managerId, name) VALUES(2, 1, 'Mike');
+
+
+ANSWERS:
+
+select name
+from employees
+where id not in (select managerId from employees where managerId is not null);
